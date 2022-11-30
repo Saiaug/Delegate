@@ -14,7 +14,7 @@ namespace Delegate
       public static void Main(string[] args)
         {
            string strl;
-            string t;
+            //string t;
             Console.Write("Input the string : ");
             strl = Console.ReadLine();
            

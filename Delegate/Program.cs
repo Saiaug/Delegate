@@ -5,103 +5,97 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static Delegate.Delegates;
 
 namespace Delegate
 {
+
+    public class Delegates
+    {
+        public delegate string onword();
+
+        public delegate string onnum();
+
+        public delegate string onjunk();
+    }
+
     public class Program
     {
-        public delegate string NewDelegate(string str);
-      public static void Main(string[] args)
-        {
-           string strl;
-            //string t;
-            Console.Write("Input the string : ");
-            strl = Console.ReadLine();
-           
+       
+
+        public static void Main(string[] args)
+      {
+            string strl;
             
-             NewDelegate d1 = new NewDelegate(OnWord);
-             NewDelegate d2 = new NewDelegate(OnNumber);
-             NewDelegate d3 = new NewDelegate(OnJunk);
-            //string str = d1.Invoke("123");
-            //string str1 = d2.Invoke("123");
-            //string str2 = d3.Invoke("123");
-            //NewDelegate multicastDelegate = (NewDelegate)NewDelegate.Combine(d1, d2, d3);
-            //multicastDelegate.Invoke();
-            // NewDelegate d1 = new NewDelegate(OnWord);
-            //Console.Write("The string is present");
-            d1(strl) ;
-            d2(strl);
-            d3(strl);
-            // Console.Write(t);
-            //Console.Read();
-        }
+            ConsoleReader reader = new ConsoleReader();
+            onword word = new onword(reader.onword);
+            onnum num = new onnum(reader.onnum);
+            onjunk junk = new onjunk(reader.onjunk);
 
-
-        public static string OnWord(string str)
-        {
-            /* foreach (char c in str)
-             {
-                 if (Char.IsLetterOrDigit(c))
-                 {
-                     Console.WriteLine("The string is alphanumeric number");
-                     Console.Read();
-                 }*/
-            if (Regex.IsMatch(str, "^[a-zA-Z0-9]*$")  && !Regex.IsMatch(str, @"^\d+$"))
+            while (true)
             {
-                Console.WriteLine("The string is aplhanumeric number");
-                Console.Read();
+                Console.Write("Input the string : ");
+                strl = Console.ReadLine();
+                reader.Run(strl, word, num, junk);
 
+               
             }
-
-            return str;
-
-
-        }
-
-        public static string OnNumber(string str)
-        {
-
-            if (Regex.IsMatch(str, @"^\d+$"))
-            {
-                Console.WriteLine("The string is number");
-                Console.Read();
-
-            }
+      }
 
 
-            return str;
         
 
+    }
+
+    public class ConsoleReader
+    {
+        public string onword()
+        {
+            return "onword";
         }
 
-        public static string OnJunk(string str)
+        public string onnum()
         {
-
-            if (!Regex.IsMatch(str, @"^[a-zA-Z0-9]+$"))
+            return "onnum";
+        }
+        public string onjunk()
+        {
+            return "onjunk";
+        }
+        public void Run(string str, onword word, onnum num, onjunk junk)
+        {
+            if (Regex.IsMatch(str, "^[a-zA-Z0-9]*$") && !Regex.IsMatch(str, @"^\d+$"))
             {
 
-                Console.WriteLine("The string is neither alphabet nor number");
-                Console.Read();
+
+                Console.WriteLine(word.Invoke());
+                
 
             }
 
-            return str;
 
 
-        }
 
-       /* public static string Run(string t)
-        {
-            Console.WriteLine(("Input the string: "));
-            Console.ReadLine();
-            return t;
+            else if (Regex.IsMatch(str, @"^\d+$"))
+            {
+                Console.WriteLine(num.Invoke());
+                
+
+            }
+
+            else if(!Regex.IsMatch(str, @"^[a-zA-Z0-9]+$"))
+            {
+
+                Console.WriteLine(junk.Invoke());
+                
+
+            }
 
            
 
 
 
-        }*/
 
-
+        }
     }
 }

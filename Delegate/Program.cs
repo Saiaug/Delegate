@@ -5,32 +5,28 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static Delegate.Delegates;
+using static Delegate.ConsoleReader;
+using static Delegate.Program;
 
 namespace Delegate
 {
 
-    public class Delegates
-    {
-        public delegate string onword();
-
-        public delegate string onnum();
-
-        public delegate string onjunk();
-    }
+   
 
     public class Program
     {
-       
 
+        public delegate void NewDelegate(string str);
         public static void Main(string[] args)
-      {
+        {
             string strl;
             
             ConsoleReader reader = new ConsoleReader();
-            onword word = new onword(reader.onword);
-            onnum num = new onnum(reader.onnum);
-            onjunk junk = new onjunk(reader.onjunk);
+            Display d = new Display();
+            NewDelegate word = new NewDelegate(d.Onword);
+            NewDelegate num = new NewDelegate(d.Onnum);
+            NewDelegate junk = new NewDelegate(d.Onjunk);
+           
 
             while (true)
             {
@@ -40,62 +36,69 @@ namespace Delegate
 
                
             }
-      }
+        }
 
 
         
 
     }
-
+ 
     public class ConsoleReader
     {
-        public string onword()
-        {
-            return "onword";
-        }
 
-        public string onnum()
+        public void Run(string str, NewDelegate word, NewDelegate num, NewDelegate junk)
         {
-            return "onnum";
-        }
-        public string onjunk()
-        {
-            return "onjunk";
-        }
-        public void Run(string str, onword word, onnum num, onjunk junk)
-        {
+            
             if (Regex.IsMatch(str, "^[a-zA-Z0-9]*$") && !Regex.IsMatch(str, @"^\d+$"))
             {
 
-
-                Console.WriteLine(word.Invoke());
-                
+                word(str);
+             
 
             }
-
-
-
 
             else if (Regex.IsMatch(str, @"^\d+$"))
             {
-                Console.WriteLine(num.Invoke());
                 
+                num(str);
+
 
             }
 
-            else if(!Regex.IsMatch(str, @"^[a-zA-Z0-9]+$"))
+            else if (!Regex.IsMatch(str, @"^[a-zA-Z0-9]+$"))
             {
 
-                Console.WriteLine(junk.Invoke());
-                
+                junk(str);
+
 
             }
-
-           
-
 
 
 
         }
+
+        public class Display 
+        {
+            public void Onword(string str)
+            {
+                
+                Console.WriteLine("onword");
+            }
+
+            public void Onnum(string str)
+            {
+                
+                Console.WriteLine("onnum");
+            }
+            public void Onjunk(string str)
+            {
+                
+                Console.WriteLine("onjunk");
+            }
+        }
+
+
+
     }
+
 }

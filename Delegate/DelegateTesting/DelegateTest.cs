@@ -14,7 +14,7 @@ namespace DelegateTesting
        // ConsoleReader reader = new ConsoleReader();
        // Display d = new Display();
         [Fact]
-        public void Test1()
+        public void Testforstring()
 
         {
             string str = "@@@@";

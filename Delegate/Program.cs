@@ -22,7 +22,7 @@ namespace Delegate
             string strl;
             
             ConsoleReader reader = new ConsoleReader();
-            Display d = new Display();
+            Iconsolereader d = new Display();
             NewDelegate word = new NewDelegate(d.Onword);
             NewDelegate num = new NewDelegate(d.Onnum);
             NewDelegate junk = new NewDelegate(d.Onjunk);
@@ -42,11 +42,20 @@ namespace Delegate
         
 
     }
+
+    public interface Iconsolereader
+    {
+         void Onword(string str);
+        void Onjunk(string str);
+        void Onnum(string str);
+    }
+
+   
  
     public class ConsoleReader
     {
 
-        public void Run(string str, NewDelegate word, NewDelegate num, NewDelegate junk)
+        public  void Run(string str, NewDelegate word, NewDelegate num, NewDelegate junk)
         {
             
             if (Regex.IsMatch(str, "^[a-zA-Z0-9]*$") && !Regex.IsMatch(str, @"^\d+$"))
@@ -77,7 +86,7 @@ namespace Delegate
 
         }
 
-        public class Display 
+        public class Display : Iconsolereader
         {
             public void Onword(string str)
             {
